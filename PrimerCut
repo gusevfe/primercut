@@ -64,7 +64,7 @@ inputIO.each do |line|
   total_T += 1 if r.with_T
   total_CUT +=1 if r.cut
   total_DROP += 1 if r.drop
-  total_INTACT if r.cut != true and r.drop != true
+  total_INTACT += 1 if r.cut != true and r.drop != true
 
   next if r.drop
   outputIO.puts r.aln.sam
