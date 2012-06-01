@@ -8,7 +8,7 @@ require_relative './PrimerCutLib.rb'
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: PrimerCut [regions]"
+  opts.banner = "PrimerCut v.1.1.0\n\nUsage: PrimerCut [regions]"
 
   opts.on("-i", "--input FILE", "Input BAM") do |v|
      options[:input] = v
@@ -16,6 +16,11 @@ OptionParser.new do |opts|
 
   opts.on("-o", "--output FILE", "Output BAM") do |v|
      options[:output] = v
+  end
+
+  opts.on("-v", "--version", "Print version information") do |v|
+    puts "PrimerCut v.1.1.0"
+    exit
   end
 
   opts.on("-r", "--regions [FILEorSTRING]", "Regions to remove (e.g.: \"1:1-100,X:1000-2000\") or \"primer.bed\"") do |v|

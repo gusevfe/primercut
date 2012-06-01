@@ -21,6 +21,8 @@ Usage: PrimerCut [regions]
 
 E.g.:
     PrimerCut -i source.bam -o target.bam -r 1:1070-1100,4:4500-4530
+    PrimerCut -i source.bam -o target.bam -r regions.bed
+
 
 LINKS
 -----
