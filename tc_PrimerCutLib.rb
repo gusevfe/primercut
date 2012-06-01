@@ -1,5 +1,65 @@
 require_relative './PrimerCutLib.rb'
 require 'test/unit'
+require 'tempfile'
+
+class TestRegion < Test::Unit::TestCase
+  def test_init
+    r = Region.new("1:1-100")
+    assert_equal("1", r.chr)
+    assert_equal(1, r.start)
+    assert_equal(100, r.finish)
+
+    r = Region.new("1\t1\t100")
+    assert_equal("1", r.chr)
+    assert_equal(1, r.start)
+    assert_equal(100, r.finish)
+
+    s = "1:100-XXX"
+    assert_raise RuntimeError, "Failed to parse #{s.inspect} as a region."  do 
+      Region.new(s)
+    end
+
+    s = "1 100\t1XXX"
+    assert_raise RuntimeError, "Failed to parse #{s.inspect} as a region."  do 
+      Region.new(s)
+    end
+  end
+end
+
+class TestRegionArray < Test::Unit::TestCase
+  def test_load_regions_from_string
+    regions = Array.load_regions("1:100-200,X:400-500")
+    assert_equal(2, regions.size) 
+
+    assert_equal("1", regions[0].chr) 
+    assert_equal(100, regions[0].start) 
+    assert_equal(200, regions[0].finish) 
+
+    assert_equal("X", regions[1].chr) 
+    assert_equal(400, regions[1].start) 
+    assert_equal(500, regions[1].finish) 
+  end
+
+  def test_load_regions_from_file
+    tmp = Tempfile.new 'bed'
+
+    tmp.puts "1\t100\t200"
+    tmp.puts "X 400 500"
+
+    tmp.close
+
+    regions = Array.load_regions(tmp.path)
+    assert_equal(2, regions.size) 
+
+    assert_equal("1", regions[0].chr) 
+    assert_equal(100, regions[0].start) 
+    assert_equal(200, regions[0].finish) 
+
+    assert_equal("X", regions[1].chr) 
+    assert_equal(400, regions[1].start) 
+    assert_equal(500, regions[1].finish) 
+  end
+end
 
 class TestAlignment < Test::Unit::TestCase
    

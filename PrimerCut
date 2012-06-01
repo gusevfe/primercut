@@ -18,12 +18,12 @@ OptionParser.new do |opts|
      options[:output] = v
   end
 
-  opts.on("-r", "--regions=a,b,c", Array, "Regions to remove") do |v|
+  opts.on("-r", "--regions [FILEorSTRING]", "Regions to remove (e.g.: \"1:1-100,X:1000-2000\") or \"primer.bed\"") do |v|
      options[:regions] = v
   end
 end.parse!
 
-options[:regions] = options[:regions].map { |s| Region.new(s)}
+options[:regions] = Array.load_regions(options[:regions])
 
 inputIO = IO.popen("samtools view -h #{options[:input]}")
 outputIO = IO.popen("samtools view -Sb - > #{options[:output]}", 'w')

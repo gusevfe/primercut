@@ -5,13 +5,43 @@ require 'ostruct'
 
 Result = Struct.new(:aln, :with_T, :cut, :drop)
 
+class Array
+  def Array.load_regions(s)
+    r = Array.new
+
+    if File.exist?(s) then
+      r = File.readlines(s)
+    else
+      r = s.split(",")
+    end
+
+    r = r.map { |x| Region.new(x) }
+
+    return r
+  end
+end
+
 class Region
   attr_accessor :chr, :start, :finish
 
   def initialize(s)
-    @chr = s[/([^:]*):/, 1]
-    @start = s[/([^:]*):([^-]*)-/, 2].to_i
-    @finish = s[/([^:]*):([^-]*)-(.*)$/, 3].to_i
+    begin
+      raise if s !~ /^\s*[^:]+:\d+-\d+\s*$/
+      @chr = s[/([^:]*):/, 1]
+      @start = s[/([^:]*):([^-]*)-/, 2].to_i
+      @finish = s[/([^:]*):([^-]*)-(.*)$/, 3].to_i
+    rescue
+      begin
+        raise if s !~ /^\s*[^\s]+\s+\d+\s+\d+\s*$/
+        s = s.split
+        @chr = s[0]
+        @start = s[1].to_i
+        @finish = s[2].to_i
+      rescue
+        raise "Failed to parse #{s.inspect} as a region."
+      end
+    end
+
   end
 
   def to_s

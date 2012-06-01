@@ -21,3 +21,8 @@ Usage: PrimerCut [regions]
 
 E.g.:
     PrimerCut -i source.bam -o target.bam -r 1:1070-1100,4:4500-4530
+
+LINKS
+-----
+ftp://rogaevlab.ru/PrimerCut
+http://github.com/gusevfe/primercut
