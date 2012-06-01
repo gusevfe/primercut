@@ -15,9 +15,9 @@ USING
 -----
 
 Usage: PrimerCut [regions]
-    -i, --input FILE                 Input BAM
-    -o, --output FILE                Output BAM
-    -r, --regions=a,b,c              Regions to remove
+    -i, --input FILE                             Input BAM
+    -o, --output FILE                            Output BAM
+    -r, --regions [a,b,c or regions.bed]         Regions to remove
 
 E.g.:
     PrimerCut -i source.bam -o target.bam -r 1:1070-1100,4:4500-4530
