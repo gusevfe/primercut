@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'bio'
+require 'bio-samtools'
+require 'ostruct'
+require_relative './PrimerCutLib.rb'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: PrimerCut [regions]"
+
+  opts.on("-i", "--input FILE", "Input BAM") do |v|
+     options[:input] = v
+  end
+
+  opts.on("-o", "--output FILE", "Output BAM") do |v|
+     options[:output] = v
+  end
+
+  opts.on("-r", "--regions=a,b,c", Array, "Regions to remove") do |v|
+     options[:regions] = v
+  end
+end.parse!
+
+options[:regions] = options[:regions].map { |s| Region.new(s)}
+
+inputIO = IO.popen("samtools view -h #{options[:input]}")
+outputIO = IO.popen("samtools view -Sb - > #{options[:output]}", 'w')
+
+total_T = 0
+total_CUT = 0
+total_INTACT = 0
+total_DROP = 0
+
+cnt = 0 
+#    options[:regions].each_index do  |i|
+#      options[:regions].each_index do  |j|
+#        next if i == j
+#        next if options[:regions][i].chr != options[:regions][j].chr
+#        next if options[:regions][i].finish < options[:regions][j].start
+#        next if options[:regions][i].start > options[:regions][j].finish
+        #throw "Overlapping or touching regions! #{regions[i]} #{regions[j]}"
+#        throw :OverlappingOrTouchingRegions
+#      end
+#    end
+    options[:regions]=options[:regions].sort { |x,y| x.start <=> y.start}
+
+inputIO.each do |line|
+  if line =~ /^@/ then
+   outputIO.puts line
+   next
+  end 
+
+  aln = Bio::DB::Alignment.new
+  aln.sam = line
+
+  r = aln.remove_primer_from_regions(options[:regions])
+  total_T += 1 if r.with_T
+  total_CUT +=1 if r.cut
+  total_DROP += 1 if r.drop
+  total_INTACT if r.cut != true and r.drop != true
+
+  next if r.drop
+  outputIO.puts r.aln.sam
+end
+
+puts "Reads left intact:              #{total_INTACT}"
+puts "Reads cut:                      #{total_CUT}"
+puts "Reads cut with additional T:    #{total_T}"
+puts "Reads dropped:                  #{total_DROP}"
