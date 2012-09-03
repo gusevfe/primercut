@@ -124,7 +124,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(915, r.aln.pos)
-    assert_equal("30M", r.aln.cigar)
+    assert_equal("5H30M", r.aln.cigar)
     assert_equal("ATTTAAAAACATGAACTAACTATATGCTGG", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<", r.aln.qual)
   end
@@ -144,7 +144,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(915, r.aln.pos)
-    assert_equal("30M", r.aln.cigar)
+    assert_equal("6H30M", r.aln.cigar)
     assert_equal("ATTTAAAAACATGAACTAACTATATGCTGG", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<", r.aln.qual)
   end
@@ -164,7 +164,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(915, r.aln.pos)
-    assert_equal("30M", r.aln.cigar)
+    assert_equal("6H30M", r.aln.cigar)
     assert_equal("ATTTAAAAACATGAACTAACTATATGCTGG", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<", r.aln.qual)
   end
@@ -176,7 +176,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(910, r.aln.pos)
-    assert_equal("20M", r.aln.cigar)
+    assert_equal("20M15H", r.aln.cigar)
     assert_equal("GACAGATTTAAAAACATGAA", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<", r.aln.qual)
   end
@@ -196,7 +196,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(910, r.aln.pos)
-    assert_equal("20M", r.aln.cigar)
+    assert_equal("20M16H", r.aln.cigar)
     assert_equal("GACAGATTTAAAAACATGAA", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<", r.aln.qual)
   end
@@ -216,7 +216,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(910, r.aln.pos)
-    assert_equal("20M", r.aln.cigar)
+    assert_equal("20M16H", r.aln.cigar)
     assert_equal("GACAGATTTAAAAACATGAA", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<", r.aln.qual)
   end
@@ -312,7 +312,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(915, r.aln.pos)
-    assert_equal("30M", r.aln.cigar)
+    assert_equal("5H30M", r.aln.cigar)
     assert_equal("ATTTAAAAACATGAACTAACTATATGCTGG", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<", r.aln.qual)
   end
@@ -333,7 +333,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(915, r.aln.pos)
-    assert_equal("30M", r.aln.cigar)
+    assert_equal("6H30M", r.aln.cigar)
     assert_equal("ATTTAAAAACATGAACTAACTATATGCTGG", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<", r.aln.qual)
   end
@@ -390,7 +390,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(915, r.aln.pos)
-    assert_equal("30M", r.aln.cigar)
+    assert_equal("6H30M", r.aln.cigar)
     assert_equal("ATTTAAAAACATGAACTAACTATATGCTGG", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<", r.aln.qual)
   end
@@ -403,7 +403,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(910, r.aln.pos)
-    assert_equal("20M", r.aln.cigar)
+    assert_equal("20M15H", r.aln.cigar)
     assert_equal("GACAGATTTAAAAACATGAA", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<", r.aln.qual)
   end
@@ -424,7 +424,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(910, r.aln.pos)
-    assert_equal("20M", r.aln.cigar)
+    assert_equal("20M16H", r.aln.cigar)
     assert_equal("GACAGATTTAAAAACATGAA", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<", r.aln.qual)
   end
@@ -480,7 +480,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(915, r.aln.pos)
-    assert_equal("15M", r.aln.cigar)
+    assert_equal("5H15M15H", r.aln.cigar)
     assert_equal("ATTTAAAAACATGAA", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<", r.aln.qual)
   end
@@ -502,7 +502,7 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false, ex)
     assert_equal(r.cut, true, ex)
     assert_equal(915, r.aln.pos, ex)
-    assert_equal("15M", r.aln.cigar, ex)
+    assert_equal("6H15M15H", r.aln.cigar, ex)
     assert_equal("ATTTAAAAACATGAA", r.aln.seq, ex)
     assert_equal("<<<<<<<<<<<<<<<", r.aln.qual, ex)
     end
@@ -525,9 +525,33 @@ class TestAlignment < Test::Unit::TestCase
     assert_equal(r.drop, false, ex)
     assert_equal(r.cut, true, ex)
     assert_equal(915, r.aln.pos, ex)
-    assert_equal("15M", r.aln.cigar, ex)
+    assert_equal("5H15M16H", r.aln.cigar, ex)
     assert_equal("ATTTAAAAACATGAA", r.aln.seq, ex)
     assert_equal("<<<<<<<<<<<<<<<", r.aln.qual, ex)
     end
+  end
+end
+
+class TestAlignmentBWA < Test::Unit::TestCase
+  def setup
+    @aln = Bio::DB::Alignment.new
+    @aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+                 3I3D29M     =       1100    225     
+                 GACAGATTTAAAAACATGAACTAACTATATGCTGG     
+                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+                }.split.join("\t")
+  end
+
+  def test_on_left_end_trimmed
+    r = @aln.remove_primer(Region.new("seq2:910-915"))
+    assert_not_equal(@aln, r.aln)
+    assert_equal(r.with_T, false)
+    assert_equal(r.drop, false)
+    assert_equal(r.cut, true)
+    assert_equal(915, r.aln.pos)
+    assert_equal("5H1D29M", r.aln.cigar)
+    assert_equal("ATTTAAAAACATGAACTAACTATATGCTGG", r.aln.seq)
+    assert_equal("<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<", r.aln.qual)
   end
 end

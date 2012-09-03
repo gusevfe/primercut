@@ -91,6 +91,22 @@ class Bio::DB::Alignment
     return true
   end
 
+  def cigar_hard_clip(cigar, x)
+    hard = cigar[0][1] == "H" ? cigar[0][0] : 0
+    hard += x
+    left = x
+    cigar = cigar.drop_while do |n, op|
+      next false if left <= n
+      left -= n
+      next true
+    end
+
+    cigar[0][0] -= left
+    cigar.unshift [hard, "H"]
+
+    cigar
+  end
+
   def remove_primer(region)
     result = Result.new
 
@@ -102,6 +118,7 @@ class Bio::DB::Alignment
     return result if self.flag & 0x04 > 0 or region.chr != self.rname
     return result if self.pos < region.start - 100 or self.pos > region.start + 100
 
+    # 10M3D5I => [[10, "M"], [3, "D"], [5, "I"]]
     cigar = self.cigar.scan(/(\d+[A-Z])/).map { |x| x[0].split(/(\d+)/)[1..-1]}.map { |a, b| [a.to_i,b]}
     calend = self.pos + cigar.find_all { |n, type| ["N", "M", "D"].include?(type) }.inject(0) { |sum, x| sum += x[0]}
 
@@ -141,7 +158,7 @@ class Bio::DB::Alignment
       result.aln.pos = fixed_region_finish
       result.aln.seq = self.seq[excess .. -1]
       result.aln.qual = self.qual[excess .. -1]
-      result.aln.cigar = result.aln.seq.length.to_s + "M"
+      result.aln.cigar = cigar_hard_clip(cigar, excess).map {|n, op| "#{n}#{op}"}.join
       result.cut = true
     end
 
@@ -153,7 +170,7 @@ class Bio::DB::Alignment
       end
       result.aln.seq = self.seq[0 .. -excess - 1]
       result.aln.qual = self.qual[0 .. -excess - 1]
-      result.aln.cigar = result.aln.seq.length.to_s + "M"
+      result.aln.cigar = cigar_hard_clip(cigar.reverse, excess).reverse.map {|n, op| "#{n}#{op}"}.join
       result.cut = true
     end
 
