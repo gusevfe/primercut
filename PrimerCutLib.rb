@@ -91,20 +91,42 @@ class Bio::DB::Alignment
     return true
   end
 
+  def cigar_append(cigar, x)
+    return cigar if x[0] == 0
+    return [x] if cigar.empty?
+
+    return cigar if cigar[-1][1] == "H" and x[1] == "D"
+
+    if cigar[-1][1] == "D" and x[1] == "H" then
+      cigar[-1] = x
+      return cigar
+    end
+
+    if cigar[-1][1] == x[1]
+      cigar[-1][0] += x[0]
+      return cigar
+    end
+
+    return cigar + [x]
+  end
+
   def cigar_hard_clip(cigar, x)
     hard = cigar[0][1] == "H" ? cigar[0][0] : 0
     hard += x
     left = x
-    cigar = cigar.drop_while do |n, op|
-      next false if left <= n
-      left -= n
-      next true
+    c = []
+    cigar.each do |n, op|
+      if ["I", "M"].include?(op)
+        z = [left, n].min
+        left -= z
+        c = cigar_append(c, [z, "H"])
+        c = cigar_append(c, [n - z, op])
+      else
+        c = cigar_append(c, [n, op])
+      end
     end
 
-    cigar[0][0] -= left
-    cigar.unshift [hard, "H"]
-
-    cigar
+    return c
   end
 
   def remove_primer(region)
@@ -124,7 +146,7 @@ class Bio::DB::Alignment
 
     fixed_region_start = region.start
     fixed_region_finish = region.finish
-    
+
     if self.pos == fixed_region_start - 1 then
       char = self.seq[0]
         
