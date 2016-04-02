@@ -64,13 +64,13 @@ end
 class TestAlignment < Test::Unit::TestCase
    
   def setup
-    @aln = Bio::DB::Alignment.new
-    @aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
-                 35M     =       1100    225     
-                 GACAGATTTAAAAACATGAACTAACTATATGCTGG     
-                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+            35M     =       1100    225     
+            GACAGATTTAAAAACATGAACTAACTATATGCTGG     
+            <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+            MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+           }.split.join("\t")
+    @aln = Bio::DB::Alignment.new sam
   end
 
   def test_not_overlapped_left_intact
@@ -130,13 +130,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_left_end_with_A_extened_trimmed
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    909     99      
-                 36M     =       1100    225     
-                 AGACAGATTTAAAAACATGAACTAACTATATGCTGG     
-                 X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    909     99      
+             36M     =       1100    225     
+             AGACAGATTTAAAAACATGAACTAACTATATGCTGG     
+             X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     r = aln.remove_primer(Region.new("seq2:910-915"))
     assert_not_equal(aln, r.aln)
@@ -150,13 +150,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_left_end_with_T_extened_trimmed
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    909     99      
-                 36M     =       1100    225     
-                 TGACAGATTTAAAAACATGAACTAACTATATGCTGG     
-                 X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    909     99      
+             36M     =       1100    225     
+             TGACAGATTTAAAAACATGAACTAACTATATGCTGG     
+             X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     r = aln.remove_primer(Region.new("seq2:910-915"))
     assert_not_equal(aln, r.aln)
@@ -182,13 +182,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_right_end_with_A_extended_trimmed
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
-                 36M     =       1100    225     
-                 GACAGATTTAAAAACATGAACTAACTATATGCTGGA
-                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+             36M     =       1100    225     
+             GACAGATTTAAAAACATGAACTAACTATATGCTGGA
+             <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     r = aln.remove_primer(Region.new("seq2:930-945"))
     assert_not_equal(@aln, r.aln)
@@ -202,13 +202,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_right_end_with_T_extended_trimmed
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
-                 36M     =       1100    225     
-                 GACAGATTTAAAAACATGAACTAACTATATGCTGGT
-                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+             36M     =       1100    225     
+             GACAGATTTAAAAACATGAACTAACTATATGCTGGT
+             <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     r = aln.remove_primer(Region.new("seq2:930-945"))
     assert_not_equal(@aln, r.aln)
@@ -222,13 +222,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_unmapped_intact
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{EAS54_65:7:56:57:985    117     seq2    1519    0     
-                 *       =       1519    0       
-                 TTCTGTCTTCTCTCCTGTCTTCTTTTCTCTTCTTT     
-                 <9'<.<7<<2<<;77<7<<<<7<7<<<<7<<<2<<  
-                 MF:i:192
-                }.split.join("\t")
+    sam = %{EAS54_65:7:56:57:985    117     seq2    1519    0     
+             *       =       1519    0       
+             TTCTGTCTTCTCTCCTGTCTTCTTTTCTCTTCTTT     
+             <9'<.<7<<2<<;77<7<<<<7<7<<<<7<<<2<<  
+             MF:i:192
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     assert_equal(aln, aln.remove_primer(Region.new("1:1-100")).aln)
     assert_equal(aln, aln.remove_primer(Region.new("seq2:1-100")).aln)
@@ -241,37 +241,37 @@ class TestAlignment < Test::Unit::TestCase
       assert_equal(@aln.remove_primer_from_regions([Region.new(r)]), @aln.remove_primer(Region.new(r)), "Region = #{r.inspect}")
     end
 
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
-                 36M     =       1100    225     
-                 GACAGATTTAAAAACATGAACTAACTATATGCTGGA
-                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-          }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+             36M     =       1100    225     
+             GACAGATTTAAAAACATGAACTAACTATATGCTGGA
+             <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+      }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     r = "seq2:930-945" 
     assert_equal(aln.remove_primer_from_regions([Region.new(r)]), aln.remove_primer(Region.new(r)), "Region = #{r.inspect}")
 
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    909     99      
-                 36M     =       1100    225     
-                 TGACAGATTTAAAAACATGAACTAACTATATGCTGG     
-                 X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    909     99      
+             36M     =       1100    225     
+             TGACAGATTTAAAAACATGAACTAACTATATGCTGG     
+             X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     r = "seq2:910-915" 
     assert_equal(aln.remove_primer_from_regions([Region.new(r)]), aln.remove_primer(Region.new(r)), "Region = #{r.inspect}")
   end
      
   def test_single_region_same_as_regions_unmapped
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{EAS54_65:7:56:57:985    117     seq2    1519    0     
-                 *       =       1519    0       
-                 TTCTGTCTTCTCTCCTGTCTTCTTTTCTCTTCTTT     
-                 <9'<.<7<<2<<;77<7<<<<7<7<<<<7<<<2<<  
-                 MF:i:192
-                }.split.join("\t")
+    sam = %{EAS54_65:7:56:57:985    117     seq2    1519    0     
+             *       =       1519    0       
+             TTCTGTCTTCTCTCCTGTCTTCTTTTCTCTTCTTT     
+             <9'<.<7<<2<<;77<7<<<<7<7<<<<7<<<2<<  
+             MF:i:192
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     assert_equal(aln.remove_primer_from_regions([Region.new("1:1-100")]), aln.remove_primer(Region.new("1:1-100")))
     assert_equal(aln.remove_primer_from_regions([Region.new("seq2:1-100")]), aln.remove_primer(Region.new("seq2:1-100")))
@@ -288,13 +288,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_several_unmapped_intact
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{EAS54_65:7:56:57:985    117     seq2    1519    0     
-                 *       =       1519    0       
-                 TTCTGTCTTCTCTCCTGTCTTCTTTTCTCTTCTTT     
-                 <9'<.<7<<2<<;77<7<<<<7<7<<<<7<<<2<<  
-                 MF:i:192
-                }.split.join("\t")
+    sam = %{EAS54_65:7:56:57:985    117     seq2    1519    0     
+             *       =       1519    0       
+             TTCTGTCTTCTCTCCTGTCTTCTTTTCTCTTCTTT     
+             <9'<.<7<<2<<;77<7<<<<7<7<<<<7<<<2<<  
+             MF:i:192
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     regions = ["1:1-100", "seq2:1-100", "seq2:1520-1525"].map { |x| Region.new(x) }
     r = aln.remove_primer_from_regions(regions)
@@ -318,13 +318,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_left_end_with_A_extened_trimmed_regions
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    909     99      
-                 36M     =       1100    225     
-                 AGACAGATTTAAAAACATGAACTAACTATATGCTGG     
-                 X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    909     99      
+             36M     =       1100    225     
+             AGACAGATTTAAAAACATGAACTAACTATATGCTGG     
+             X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     regions = ["1:1-100", "seq2:1-100", "seq2:910-915"].map { |x| Region.new(x) }
     r = aln.remove_primer_from_regions(regions)
@@ -339,13 +339,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_left_end_with_G_extened_trimmed_regions
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    909     99      
-                 36M     =       1100    225     
-                 GGACAGATTTAAAAACATGAACTAACTATATGCTGG     
-                 X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    909     99      
+             36M     =       1100    225     
+             GGACAGATTTAAAAACATGAACTAACTATATGCTGG     
+             X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     regions = ["1:1-100", "seq2:1-100", "seq2:910-915"].map { |x| Region.new(x) }
 
@@ -357,13 +357,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_left_end_with_GG_extened_trimmed_regions
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    909     99      
-                 37M     =       1100    225     
-                 GGGACAGATTTAAAAACATGAACTAACTATATGCTGG     
-                 XX<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    909     99      
+             37M     =       1100    225     
+             GGGACAGATTTAAAAACATGAACTAACTATATGCTGG     
+             XX<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     regions = ["1:1-100", "seq2:1-100", "seq2:910-915"].map { |x| Region.new(x) }
 
@@ -375,13 +375,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_left_end_with_T_extened_trimmed_regions
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    909     99      
-                 36M     =       1100    225     
-                 TGACAGATTTAAAAACATGAACTAACTATATGCTGG     
-                 X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    909     99      
+             36M     =       1100    225     
+             TGACAGATTTAAAAACATGAACTAACTATATGCTGG     
+             X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     regions = ["1:1-100", "seq2:1-100", "seq2:910-915"].map { |x| Region.new(x) }
     r = aln.remove_primer_from_regions(regions)
@@ -409,13 +409,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_right_end_with_A_extended_trimmed_regions
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
-                 36M     =       1100    225     
-                 GACAGATTTAAAAACATGAACTAACTATATGCTGGA
-                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+             36M     =       1100    225     
+             GACAGATTTAAAAACATGAACTAACTATATGCTGGA
+             <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     regions = ["1:1-100", "seq2:1-100", "seq2:930-945"].map { |x| Region.new(x) }
     r = aln.remove_primer_from_regions(regions)
@@ -430,13 +430,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_right_end_with_C_extended_trimmed_regions
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
-                 36M     =       1100    225     
-                 GACAGATTTAAAAACATGAACTAACTATATGCTGGC
-                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+             36M     =       1100    225     
+             GACAGATTTAAAAACATGAACTAACTATATGCTGGC
+             <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     regions = ["1:1-100", "seq2:1-100", "seq2:930-945"].map { |x| Region.new(x) }
     r = aln.remove_primer_from_regions(regions)
@@ -447,13 +447,13 @@ class TestAlignment < Test::Unit::TestCase
   end
 
   def test_on_right_end_with_CC_extended_trimmed_regions
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
-                 37M     =       1100    225     
-                 GACAGATTTAAAAACATGAACTAACTATATGCTGGCC
-                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<XX
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+             37M     =       1100    225     
+             GACAGATTTAAAAACATGAACTAACTATATGCTGGCC
+             <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<XX
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
 
     regions = ["1:1-100", "seq2:1-100", "seq2:930-945"].map { |x| Region.new(x) }
     r = aln.remove_primer_from_regions(regions)
@@ -487,13 +487,13 @@ class TestAlignment < Test::Unit::TestCase
 
   def test_on_left_end_trimmed_regions_two_from_begin_and_end_extened
     ["A", "T"].each do |ex|
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    909     99      
-                 36M     =       1100    225     
-                 #{ex}GACAGATTTAAAAACATGAACTAACTATATGCTGG     
-                 X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    909     99      
+             36M     =       1100    225     
+             #{ex}GACAGATTTAAAAACATGAACTAACTATATGCTGG     
+             X<<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
     regions = ["1:1-100", "seq2:910-915", "seq2:930-945"].map { |x| Region.new(x) }
     r = nil
     assert_nothing_thrown(ex) { r = aln.remove_primer_from_regions(regions) }
@@ -510,13 +510,13 @@ class TestAlignment < Test::Unit::TestCase
 
   def test_on_right_end_trimmed_regions_two_from_begin_and_end_extened
     ["A", "T"].each do |ex|
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
-                 36M     =       1100    225     
-                 GACAGATTTAAAAACATGAACTAACTATATGCTGG#{ex}
-                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+             36M     =       1100    225     
+             GACAGATTTAAAAACATGAACTAACTATATGCTGG#{ex}
+             <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<X
+             MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+            }.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
     regions = ["1:1-100", "seq2:910-915", "seq2:930-945"].map { |x| Region.new(x) }
     r = nil
     assert_nothing_thrown(ex) { r = aln.remove_primer_from_regions(regions) }
@@ -534,13 +534,13 @@ end
 
 class TestAlignmentBWA < Test::Unit::TestCase
   def setup
-    @aln = Bio::DB::Alignment.new
-    @aln.sam = %{B7_610:8:68:570:705     99      seq2    910     99      
-                 3I3D29M     =       1100    225     
-                 GACTTTAAAAACATGAACTAACTATATGCTGG     
-                 <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
-                 MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
-                }.split.join("\t")
+    sam = %{B7_610:8:68:570:705     99      seq2    910     99      
+            3I3D29M     =       1100    225     
+            GACTTTAAAAACATGAACTAACTATATGCTGG     
+            <<<<<<<<<<<<<<<<<<<<<<<<<<;<<<<<<8< 
+            MF:i:18 Aq:i:30 NM:i:0  UQ:i:0  H0:i:1  H1:i:0
+           }.split.join("\t")
+    @aln = Bio::DB::Alignment.new sam
   end
 
   def test_on_left_end_trimmed
@@ -558,12 +558,12 @@ end
 
 class TestRealWorld < Test::Unit::TestCase
   def test_one
-    aln = Bio::DB::Alignment.new
-    aln.sam = %{1031_1902_651	16	1	150238458	5	8H27M15H	
-                *	0	0	NTNNNNNTGGAGAAATACAGGGCGAGG	
-                *-)&%%'/66DFD@DJJJJJJJJJJJ5	RG:Z:test	NH:i:1	
-                CM:i:2	NM:i:0	CQ:Z:1%B674:+@>3<BA)86BB62:/:;5?6'4/4-B/-)8/))'-)/37)0,	
-                CS:Z:T20213001022122110223300211330022201222101221223102}.split.join("\t")
+    sam = %{1031_1902_651	16	1	150238458	5	8H27M15H	
+            *	0	0	NTNNNNNTGGAGAAATACAGGGCGAGG	
+            *-)&%%'/66DFD@DJJJJJJJJJJJ5	RG:Z:test	NH:i:1	
+            CM:i:2	NM:i:0	CQ:Z:1%B674:+@>3<BA)86BB62:/:;5?6'4/4-B/-)8/))'-)/37)0,	
+            CS:Z:T20213001022122110223300211330022201222101221223102}.split.join("\t")
+    aln = Bio::DB::Alignment.new sam
     
     r = aln.remove_primer(Region.new("1:150238466-150238485"))
 
