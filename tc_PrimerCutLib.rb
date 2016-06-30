@@ -9,10 +9,10 @@ class TestRegion < Test::Unit::TestCase
     assert_equal(1, r.start)
     assert_equal(100, r.finish)
 
-    r = Region.new("1\t1\t100")
+    r = Region.new("1\t0\t100")
     assert_equal("1", r.chr)
     assert_equal(1, r.start)
-    assert_equal(100, r.finish)
+    assert_equal(101, r.finish)
 
     s = "1:100-XXX"
     assert_raise RuntimeError, "Failed to parse #{s.inspect} as a region."  do 
@@ -52,12 +52,12 @@ class TestRegionArray < Test::Unit::TestCase
     assert_equal(2, regions.size) 
 
     assert_equal("1", regions[0].chr) 
-    assert_equal(100, regions[0].start) 
-    assert_equal(200, regions[0].finish) 
+    assert_equal(101, regions[0].start) 
+    assert_equal(201, regions[0].finish) 
 
     assert_equal("X", regions[1].chr) 
-    assert_equal(400, regions[1].start) 
-    assert_equal(500, regions[1].finish) 
+    assert_equal(401, regions[1].start) 
+    assert_equal(501, regions[1].finish) 
   end
 end
 
@@ -550,8 +550,8 @@ class TestAlignmentBWA < Test::Unit::TestCase
     assert_equal(r.drop, false)
     assert_equal(r.cut, true)
     assert_equal(915, r.aln.pos)
-    #assert_equal("5H1D29M", r.aln.cigar)
-    #assert_equal("ATTTAAAAACATGAACTAACTATATGCTGG", r.aln.seq)
+    assert_equal("5H1D29M", r.aln.cigar)
+    assert_equal("ATTTAAAAACATGAACTAACTATATGCTGG", r.aln.seq)
     assert_equal("<<<<<<<<<<<<<<<<<<<<<;<<<<<<8<", r.aln.qual)
   end
 end

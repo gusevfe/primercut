@@ -32,11 +32,12 @@ class Region
       @finish = s[/([^:]*):([^-]*)-(.*)$/, 3].to_i
     rescue
       begin
-        raise if s !~ /^\s*[^\s]+\s+\d+\s+\d+\s*$/
+        raise if s !~ /^\s*[^\s]+\s+\d+\s+\d+[\s$]/
+        # BED entry
         s = s.split
         @chr = s[0]
-        @start = s[1].to_i
-        @finish = s[2].to_i
+        @start = s[1].to_i + 1
+        @finish = s[2].to_i + 1
       rescue
         raise "Failed to parse #{s.inspect} as a region."
       end

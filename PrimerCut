@@ -57,8 +57,7 @@ inputIO.each do |line|
    next
   end 
 
-  aln = Bio::DB::Alignment.new
-  aln.sam = line
+  aln = Bio::DB::Alignment.new line
 
   r = aln.remove_primer_from_regions(options[:regions])
   total_T += 1 if r.with_T
